@@ -108,3 +108,4 @@ Sample HomeBridge Configuration (minimal)
 
 **"statusGet": "stat/sonoff/RESULT"** - is for Tasmota firmware relays only! For toher use: **"statusGet": "stat/sonoff/POWER"**
 
+# homebridge-sonoff-tasmota
