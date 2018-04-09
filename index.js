@@ -5,13 +5,13 @@
 
 var Service, Characteristic;
 var mqtt = require("mqtt");
+var path = require('path');
 
 module.exports = function (homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
 
-    homebridge.registerPlatform("homebridge-sonoff-tasmota", "Sonoff-Tasmota", SonoffTomostaPlatform);
-
+    homebridge.registerPlatform("homebridge-sonoff-tasmota", "Sonoff-Tasmota", SonoffTasmotaPlatform);
 };
 
 /**
@@ -35,7 +35,7 @@ module.exports = function (homebridge) {
  "model": "Sonoff TH",
  "serialNumberMAC": "MAC OR SERIAL NUMBER"
  */
-function SonoffTasmotaPlatform (log, config) {
+function SonoffTasmotaPlatform(log, config) {
     this.log = log;
     this.devices = config["devices"];
     this.name = config["name"] || "Sonoff";
@@ -53,7 +53,7 @@ function SonoffTasmotaPlatform (log, config) {
  * @param device
  * @constructor
  */
-function SonoffTasmotaAccessory (log, config, device) {
+function SonoffTasmotaAccessory(log, config, device) {
 
     this.log = log;
     this.url = config["url"];
@@ -116,6 +116,7 @@ function SonoffTasmotaAccessory (log, config, device) {
     this.maxTemp = device.maxTemp ? device.maxTemp : -1;
     this.minHum = device.minHum ? device.minHum : -1;
     this.maxHum = device.maxHum ? device.maxHum : -1;
+    this.maxOn = device.maxOn ? device.maxOn : 1000;
 
     this.closeAfter = device.closeAfter ? device.closeAfter : -1;
 }
@@ -178,16 +179,16 @@ SonoffTasmotaAccessory.prototype = {
         }
 
         else if (this.isLockMechanism) {
-            this.lockService = new Service.LockMechanism(this.name);
+            this.accessories = new Service.LockMechanism(this.name);
 
-            this.lockService
+            this.accessories
                 .getCharacteristic(Characteristic.LockCurrentState)
                 .on('get', function (callback) {
                     this.getState(this.buttonType, callback);
                 }.bind(this))
                 .value = this.extractValue(this.buttonType, this.status);
 
-            this.lockService
+            this.accessories
                 .getCharacteristic(Characteristic.LockTargetState)
                 .on('get', function (callback) {
                     this.getState(this.buttonType, callback);
@@ -282,30 +283,36 @@ SonoffTasmotaAccessory.prototype = {
     },
 
     extractValue: function (buttonType, status) {
-        this.getTvIsOn(function (err, isOn) {
-            this.isTvOn = isOn;
-        }.bind(this));
         switch (buttonType.toLowerCase()) {
             case 's':
             case 'o':
             {
                 if (this.activeStat) {
-                    callback(null, this.status);
+                    callback(null, status);
                 } else {
                     callback(null);
                 }
+                break;
             }
             case 'l':
+            {
+                if (this.activeStat) {
+                    var locked = (status == "lock") ? Characteristic.LockCurrentState.SECURED : Characteristic.LockCurrentState.UNSECURED;
+                    this.setCharacteristic(Characteristic.LockCurrentState, locked);
+                    callback(null, status);
+                } else {
+                    callback(null);
+                }
                 break;
+            }
             case 'blinds':
             {
-
                 break;
             }
             default:
             {
                 if (this.activeStat) {
-                    callback(null, this.status);
+                    callback(null, status);
                 } else {
                     callback(null);
                 }
@@ -339,32 +346,20 @@ SonoffTasmotaAccessory.prototype = {
                     this.status = status;
                     this.client.publish(this.topicStatusSet, status ? this.onValue : this.offValue, this.publish_options);
                 }
-                if(callback) callback();
+                if (callback) callback();
                 break;
-            case 'mute':
-                this.getTvIsOn(function (err, isOn) {
-                    this.isTvOn = isOn;
-                }.bind(this));
-                if (this.isTvOn == true) {
-                    if (this.volumeInProgress == false && this.isMute != value) {
-                        this.setRemoteCommand('Mute', callback);
-                        this.isMute = value;
+            case 'l':
+                if (context !== 'fromSetValue') {
+                    this.status = status;
+                    this.client.publish(this.topicStatusSet, status ? this.onValue : this.offValue, this.publish_options);
+                    if (this.status != "lock") {
+                        setTimeout(function () {
+                            this.status = !this.status;
+                            this.client.publish(this.topicStatusSet, status ? this.onValue : this.offValue, this.publish_options);
+                        }.bind(this), this.maxOn * 1000);
                     }
-                } else {
-                    callback(new Error("TV Is Off"));
                 }
-                break;
-            case 'volume':
-                this.setTvVolume(value, callback);
-                break;
-            case 'powerchannel':
-                this.getTvIsOn(function (err, isOn) {
-                    this.isTvOn = isOn;
-                    callback(err, isOn);
-                }.bind(this));
-                break;
-            case 'channel':
-                this.setTvChannel(value, callback);
+                if (callback) callback();
                 break;
             case 'door':
             case 'blinds':
@@ -391,34 +386,17 @@ SonoffTasmotaAccessory.prototype = {
         callback();
     },
 
-    // get device Status
-    getStatus: function (callback) {
-        if (this.activeStat) {
-            callback(null, this.status);
-        } else {
-            callback(null);
-        }
-    },
-
     /**
-     * Set Device Action Status
-     * @param status
      * @param callback
-     * @param context
      */
-    setStatus: function (status, callback, context) {
-        if (context !== 'fromSetValue') {
-            this.status = status;
-            this.client.publish(this.topicStatusSet, status ? this.onValue : this.offValue, this.publish_options);
-        }
-        callback();
-    },
-
     getStatusActive: function (callback) {
         this.log(this.name, " -  Activity Set : ", this.activeStat);
         callback(null, this.activeStat);
     },
 
+    /**
+     * @param callback
+     */
     getOutletUse: function (callback) {
         callback(null, true); // If configured for outlet - always in use (for now)
     },
@@ -487,4 +465,4 @@ SonoffTasmotaAccessory.prototype = {
             this.client.subscribe(this.activityTopic);
         }
     }
-}
+};
