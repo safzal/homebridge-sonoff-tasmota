@@ -6,12 +6,13 @@
 var Service, Characteristic;
 var mqtt = require("mqtt");
 var path = require('path');
+var fs = require("fs");
 
 module.exports = function (homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
 
-    homebridge.registerPlatform("homebridge-sonoff-tasmota", "Sonoff-Tasmota", SonoffTasmotaPlatform);
+    homebridge.registerPlatform("homebridge-sonoff-tasmota", "sonoff-tasmota", SonoffTasmotaPlatform);
 };
 
 /**
