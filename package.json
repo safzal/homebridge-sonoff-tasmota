@@ -1,6 +1,6 @@
 {
   "name": "@safzal/homebridge-sonoff-tasmota",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Plugin to HomeBridge optimized for work with Itead Sonoff and Electro dragon Relay Board hardware with firmware Sonoff-Tasmota via MQTT.",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "node": ">4.0.0"
   },
   "publishConfig": {
-    "registry":"https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com"
   },
   "keywords": [
     "homebridge-plugin",
@@ -40,5 +40,6 @@
   "bugs": {
     "url": "https://github.com/safzal/homebridge-sonoff-tasmota/issues"
   },
-  "homepage": "https://github.com/safzal/homebridge-sonoff-tasmota#readme"
+  "homepage": "https://github.com/safzal/homebridge-sonoff-tasmota#readme",
+  "devDependencies": {}
 }

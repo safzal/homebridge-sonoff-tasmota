@@ -34,6 +34,12 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="settings.github" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
@@ -48,7 +54,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1523653101370</updated>
-      <workItem from="1609528850526" duration="542000" />
+      <workItem from="1609528850526" duration="1547000" />
     </task>
     <task id="LOCAL-00001" summary="published">
       <created>1609528935859</created>
@@ -57,7 +63,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609528935859</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="published">
+      <created>1609529528122</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1609529528122</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -68,13 +81,19 @@
     <option name="LAST_COMMIT_MESSAGE" value="published" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2311" y="136" key="CommitChangelistDialog2" timestamp="1609528935530">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="391" y="136" key="CommitChangelistDialog2" timestamp="1609529527947">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
+    <state x="391" y="136" key="CommitChangelistDialog2/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1609529527947" />
     <state x="2311" y="136" key="CommitChangelistDialog2/0.0.1920.1080/1920.0.1920.1080@1920.0.1920.1080" timestamp="1609528935530" />
-    <state x="2480" y="277" key="Vcs.Push.Dialog.v2" timestamp="1609528937804">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="560" y="277" key="Vcs.Push.Dialog.v2" timestamp="1614528038097">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
+    <state x="560" y="277" key="Vcs.Push.Dialog.v2/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1614528038097" />
     <state x="2480" y="277" key="Vcs.Push.Dialog.v2/0.0.1920.1080/1920.0.1920.1080@1920.0.1920.1080" timestamp="1609528937804" />
+    <state x="538" y="438" key="git4idea.ui.GitResetDialog" timestamp="1614528050022">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="538" y="438" key="git4idea.ui.GitResetDialog/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1614528050022" />
   </component>
 </project>
